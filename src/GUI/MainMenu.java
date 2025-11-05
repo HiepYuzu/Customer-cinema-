@@ -10,14 +10,13 @@ package GUI;
  */
 public class MainMenu extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MainMenu.class.getName());
-
     /**
      * Creates new form MainMenu
      */
     public MainMenu() {
         setLocationRelativeTo(null);
         initComponents();
-        
+    
     }
     public MainMenu(String name){
         initComponents();
@@ -118,7 +117,7 @@ public class MainMenu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void movieBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_movieBtnActionPerformed
-        // TODO add your handling code here:
+        java.awt.EventQueue.invokeLater(() -> new MovieGUI().setVisible(true));
     }//GEN-LAST:event_movieBtnActionPerformed
 
     private void logoutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutBtnActionPerformed

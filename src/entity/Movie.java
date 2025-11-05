@@ -17,7 +17,7 @@ public class Movie {
     private boolean isShowing;
     public Movie(){
     }
-    public Movie(String id,String title,String genre,String director,int duration,boolean isShowing){
+    public Movie(String id,String title,String genre,String director,int duration){
         this.id=id;
         this.title=title;
         this.genre=genre;
