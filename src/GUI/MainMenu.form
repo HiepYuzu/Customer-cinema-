@@ -26,7 +26,7 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
               <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="75" max="32767" attributes="0"/>
+              <EmptySpace pref="41" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -54,12 +54,21 @@
                           <EmptySpace max="32767" attributes="0"/>
                           <Component id="logoutBtn" min="-2" pref="102" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="102" attributes="0">
-                          <Component id="movieBtn" min="-2" pref="102" max="-2" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="movieBtn" alignment="0" min="-2" pref="102" max="-2" attributes="0"/>
+                              <Component id="serviceBtn" alignment="0" min="-2" pref="102" max="-2" attributes="0"/>
+                          </Group>
                           <EmptySpace min="-2" pref="72" max="-2" attributes="0"/>
-                          <Component id="showtimeBtn" min="-2" pref="102" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="showtimeBtn" pref="102" max="32767" attributes="0"/>
+                              <Component id="customerBtn" max="32767" attributes="0"/>
+                          </Group>
                           <EmptySpace pref="74" max="32767" attributes="0"/>
-                          <Component id="roomBtn" min="-2" pref="102" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="roomBtn" max="32767" attributes="0"/>
+                              <Component id="reportBtn" max="32767" attributes="0"/>
+                          </Group>
                       </Group>
                   </Group>
                   <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
@@ -80,7 +89,13 @@
                       <Component id="showtimeBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="roomBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="160" max="32767" attributes="0"/>
+                  <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="serviceBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="customerBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="reportBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace pref="102" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -119,6 +134,24 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="logoutBtnActionPerformed"/>
           </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="serviceBtn">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="D&#x1ecb;ch v&#x1ee5;"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="serviceBtnActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="customerBtn">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Kh&#xe1;ch h&#xe0;ng"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="reportBtn">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Th&#x1ed1;ng k&#xea; doanh thu"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>
