@@ -57,6 +57,11 @@ public class MainMenu extends javax.swing.JFrame {
         showtimeBtn.setText("Suất chiếu");
 
         roomBtn.setText("Phòng chiếu");
+        roomBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                roomBtnActionPerformed(evt);
+            }
+        });
 
         logoutBtn.setText("Đăng xuất");
         logoutBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -153,6 +158,10 @@ public class MainMenu extends javax.swing.JFrame {
     private void serviceBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_serviceBtnActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_serviceBtnActionPerformed
+
+    private void roomBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roomBtnActionPerformed
+        java.awt.EventQueue.invokeLater(() -> new RoomGUI().setVisible(true));
+    }//GEN-LAST:event_roomBtnActionPerformed
 
     /**
      * @param args the command line arguments
