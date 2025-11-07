@@ -13,13 +13,14 @@ import entity.Room;
 import cinema.Database;
 import java.awt.HeadlessException;
 import java.sql.*;
+import java.util.stream.IntStream;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 public class RoomGUI extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(RoomGUI.class.getName());
     private final RoomDAO roomDAO;
-    private DefaultTableModel model;
+    private DefaultTableModel model,roomModel;
     /**
      * Creates new form RoomGUI
      */
@@ -54,6 +55,11 @@ public class RoomGUI extends javax.swing.JFrame {
         editBtn = new javax.swing.JButton();
         deleteBtn = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        RoomComboBox = new javax.swing.JComboBox<>();
+        jPanel3 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        TableSeat = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -177,20 +183,70 @@ public class RoomGUI extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(deleteBtn))
-                .addContainerGap(32, Short.MAX_VALUE))
+                .addContainerGap(182, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Quản lý", jPanel1);
+
+        jLabel5.setText("Tên phòng:");
+
+        RoomComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RoomComboBoxActionPerformed(evt);
+            }
+        });
+
+        TableSeat.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane2.setViewportView(TableSeat);
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(25, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(116, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 603, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(46, 46, 46)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(RoomComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(74, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 268, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(33, 33, 33)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(RoomComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Sơ đồ phòng chiếu", jPanel2);
@@ -202,14 +258,14 @@ public class RoomGUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(48, 48, 48)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 603, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(44, Short.MAX_VALUE))
+                .addContainerGap(51, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -219,7 +275,7 @@ public class RoomGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_IdFieldActionPerformed
     private void getRoom(){
-        String sql="select * from theater";
+       String sql="select * from theater";
        
        try{
           Connection con=Database.getDB().connect();
@@ -229,6 +285,13 @@ public class RoomGUI extends javax.swing.JFrame {
           model.setRowCount(0);
           while(rs.next()){
              model.addRow(new Object[]{rs.getString(1),rs.getString(2),rs.getInt(5)});
+             String name=rs.getString(2);
+             boolean exists = IntStream.range(0, RoomComboBox.getItemCount())
+                              .mapToObj(RoomComboBox::getItemAt)
+                              .anyMatch(item -> item.equals(name));
+             if(!exists){
+                RoomComboBox.addItem(name);
+             }
           }
        }catch(SQLException | ClassNotFoundException ex){
           JOptionPane.showMessageDialog(this,"Lỗi");
@@ -243,8 +306,10 @@ public class RoomGUI extends javax.swing.JFrame {
         int confirm=JOptionPane.showConfirmDialog(this,"Bạn có chắc muốn xóa phòng này");
         if(confirm==JOptionPane.YES_OPTION){
             String id=(String) model.getValueAt(selectedRow,0);
+            String name=(String) model.getValueAt(selectedRow,1);
             try {
                 roomDAO.deleteRoom(id);
+                RoomComboBox.removeItem(name);
                 JOptionPane.showMessageDialog(this,"Xóa thành công");
                 getRoom();
                 ClearForm();
@@ -288,6 +353,35 @@ public class RoomGUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this,"Lỗi thêm phòng");
         }
     }//GEN-LAST:event_addBtnActionPerformed
+
+    private void RoomComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RoomComboBoxActionPerformed
+          String name=(String)RoomComboBox.getSelectedItem();
+          String sql="select * from theater where theater_name=?";
+           
+       try{
+          Connection con=Database.getDB().connect();
+          PreparedStatement pst=con.prepareStatement(sql);
+          pst.setString(1,name);
+          ResultSet rs=pst.executeQuery();
+          roomModel=(DefaultTableModel)TableSeat.getModel();
+          roomModel.setRowCount(0);
+          roomModel.setColumnCount(0);
+          if(rs.next()){  
+          for (int j = 0; j < rs.getInt(4); j++) {
+            roomModel.addColumn(String.valueOf((char) ('A' + j)));
+          }
+          for(int i=0;i<rs.getInt(3);i++){
+                Object[] row=new Object[rs.getInt(4)];
+                for(int j=0;j<rs.getInt(4);j++){               
+                    row[j]=(char)('A'+j)+String.valueOf(1+i);              
+                }
+                roomModel.addRow(row); 
+            }}                      
+       }catch(SQLException | ClassNotFoundException ex){
+          JOptionPane.showMessageDialog(this,"Lỗi"+ex.getMessage());
+          
+       }
+    }//GEN-LAST:event_RoomComboBoxActionPerformed
     private void ClearForm(){
            IdField.setText("");
            NameField.setText("");
@@ -323,9 +417,11 @@ public class RoomGUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField IdField;
     private javax.swing.JTextField NameField;
+    private javax.swing.JComboBox<String> RoomComboBox;
     private javax.swing.JTextField RowField;
     private javax.swing.JTextField SeatPerRowField;
     private javax.swing.JTable TableRoom;
+    private javax.swing.JTable TableSeat;
     private javax.swing.JButton addBtn;
     private javax.swing.JButton deleteBtn;
     private javax.swing.JButton editBtn;
@@ -333,9 +429,12 @@ public class RoomGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     // End of variables declaration//GEN-END:variables
 }
