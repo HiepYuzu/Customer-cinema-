@@ -11,6 +11,9 @@ package DAO;
 import cinema.Database;
 import entity.Movie;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 public class MovieDAO {
     private Connection getConnect() throws ClassNotFoundException, SQLException{
        return Database.getDB().connect();
@@ -53,4 +56,37 @@ public class MovieDAO {
             pst.executeUpdate();
         }
     }
+    public List<Movie> findAll() throws SQLException, ClassNotFoundException {
+        List<Movie> movies = new ArrayList<>();
+        String sql = "SELECT * FROM movie ORDER BY mov_title";
+        try (Statement stmt = getConnect().createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                Movie movie = extractMovie(rs);
+                movies.add(movie);
+            }
+        }
+        return movies;
+    }    
+    public Optional<Movie> findById(String id) throws SQLException, ClassNotFoundException {
+        String sql = "SELECT * FROM movie WHERE mov_id=?";
+        try (PreparedStatement stmt = getConnect().prepareStatement(sql)) {
+            stmt.setString(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                Movie movie = extractMovie(rs);
+                return Optional.of(movie);
+            }
+        }
+        return Optional.empty();
+    }   
+    private Movie extractMovie(ResultSet rs) throws SQLException {
+        return new Movie(
+            rs.getString("mov_id"),
+            rs.getString("mov_title"),
+            rs.getString("mov_genre"),
+            rs.getString("mov_director"),    
+            rs.getInt("mov_duration")        
+        );
+    }    
 }

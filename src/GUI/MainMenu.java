@@ -55,6 +55,11 @@ public class MainMenu extends javax.swing.JFrame {
         });
 
         showtimeBtn.setText("Suất chiếu");
+        showtimeBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showtimeBtnActionPerformed(evt);
+            }
+        });
 
         roomBtn.setText("Phòng chiếu");
         roomBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -78,6 +83,11 @@ public class MainMenu extends javax.swing.JFrame {
         });
 
         customerBtn.setText("Khách hàng");
+        customerBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                customerBtnActionPerformed(evt);
+            }
+        });
 
         reportBtn.setText("Thống kê doanh thu");
 
@@ -162,6 +172,16 @@ public class MainMenu extends javax.swing.JFrame {
     private void roomBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roomBtnActionPerformed
         java.awt.EventQueue.invokeLater(() -> new RoomGUI().setVisible(true));
     }//GEN-LAST:event_roomBtnActionPerformed
+
+    private void customerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customerBtnActionPerformed
+        java.awt.EventQueue.invokeLater(() -> new CustomerGUI().setVisible(true));
+    }//GEN-LAST:event_customerBtnActionPerformed
+
+    private void showtimeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showtimeBtnActionPerformed
+        java.awt.EventQueue.invokeLater(() -> {
+            new ShowtimeGUI().setVisible(true);
+        });
+    }//GEN-LAST:event_showtimeBtnActionPerformed
 
     /**
      * @param args the command line arguments

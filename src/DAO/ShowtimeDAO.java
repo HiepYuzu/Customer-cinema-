@@ -1,0 +1,108 @@
+package DAO;
+
+import cinema.Database;
+import entity.Movie;
+import entity.Room;
+import entity.Showtime;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+public class ShowtimeDAO {
+    private final MovieDAO movieDAO;
+    private final RoomDAO roomDAO;
+    private Connection getConnect() throws ClassNotFoundException, SQLException {
+        return Database.getDB().connect();
+    }
+    public ShowtimeDAO(){
+        movieDAO=new MovieDAO();
+        roomDAO=new RoomDAO();
+    }
+    // Thêm suất chiếu mới
+    public void addShowtime(Showtime showtime) throws SQLException, ClassNotFoundException {
+        String sql = "INSERT INTO showtime (Show_ID, Mov_ID, Theater_ID, Show_date, Start_time, End_time, Show_price) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement pst = getConnect().prepareStatement(sql)) {
+            pst.setString(1, showtime.getId());
+            pst.setString(2, showtime.getMovie().getId());
+            pst.setString(3, showtime.getRoom().getId());
+            pst.setDate(4, Date.valueOf(showtime.getDate()));
+            pst.setTime(5, Time.valueOf(showtime.getStart_time()));
+            pst.setTime(6, Time.valueOf(showtime.getEnd_time()));
+            pst.setDouble(7, showtime.getShow_price());
+            pst.executeUpdate();
+        }
+    }
+
+    // Sửa suất chiếu
+    public void editShowtime(Showtime showtime) throws SQLException, ClassNotFoundException {
+        String sql = "UPDATE showtime SET Mov_ID=?, Theater_ID=?, Show_date=?, Start_time=?, End_time=?, Show_price=? WHERE Show_ID=?";
+        try (PreparedStatement pst = getConnect().prepareStatement(sql)) {
+            pst.setString(1, showtime.getMovie().getId());
+            pst.setString(2, showtime.getRoom().getId());
+            pst.setDate(3, Date.valueOf(showtime.getDate()));
+            pst.setTime(4, Time.valueOf(showtime.getStart_time()));
+            pst.setTime(5, Time.valueOf(showtime.getEnd_time()));
+            pst.setDouble(6, showtime.getShow_price());
+            pst.setString(7, showtime.getId());
+            pst.executeUpdate();
+        }
+    }
+
+    // Xóa suất chiếu
+    public void deleteShowtime(String showId) throws SQLException, ClassNotFoundException {
+        String sql = "DELETE FROM showtime WHERE Show_ID=?";
+        try (PreparedStatement pst = getConnect().prepareStatement(sql)) {
+            pst.setString(1, showId);
+            pst.executeUpdate();
+        }
+    }
+
+    // Lấy tất cả suất chiếu
+    public List<Showtime> getAllShowtimes() throws SQLException, ClassNotFoundException {
+        List<Showtime> showtimes = new ArrayList<>();
+        String sql = "SELECT * FROM showtime";
+        try (PreparedStatement pst = getConnect().prepareStatement(sql);
+             ResultSet rs = pst.executeQuery()) {
+            while (rs.next()) {
+               showtimes.add(extractShowTime(rs));
+            }
+        }
+        return showtimes;
+    }
+
+    // Tìm suất chiếu theo ID
+    public Optional<Showtime> getShowtimeById(String showId) throws SQLException, ClassNotFoundException {
+        String sql = "SELECT * FROM showtime WHERE Show_ID=?";
+        try (PreparedStatement pst = getConnect().prepareStatement(sql)) {
+            pst.setString(1, showId);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                return Optional.of(extractShowTime(rs));
+            }
+        }
+        return null;
+    }
+    private Showtime extractShowTime(ResultSet rs) throws SQLException, ClassNotFoundException {
+        String movieId = rs.getString("mov_id");
+        String roomId = rs.getString("theater_id");
+        
+        Optional<Movie> movieOpt = movieDAO.findById(movieId);
+        Optional<Room> roomOpt = roomDAO.findById(roomId);
+        
+        if (!movieOpt.isPresent() || !roomOpt.isPresent()) {
+            throw new SQLException("Movie or Room not found for ShowTime");
+        }
+        
+        Showtime showTime = new Showtime(
+            rs.getString("show_id"),
+            movieOpt.get(),
+            roomOpt.get(),
+            rs.getDate("show_date").toLocalDate(),    
+            rs.getTime("start_time").toLocalTime(),
+            rs.getDouble("show_price")
+        );
+       
+        return showTime;
+    }
+}

@@ -11,6 +11,9 @@ package DAO;
 import cinema.Database;
 import java.sql.*;
 import entity.Room;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 public class RoomDAO {
     private Connection getConnect() throws ClassNotFoundException, SQLException{
        return Database.getDB().connect();
@@ -44,4 +47,34 @@ public class RoomDAO {
             pst.executeUpdate();
         }
     }
+    public Optional<Room> findById(String id) throws SQLException, ClassNotFoundException {
+        String sql = "SELECT * FROM theater WHERE theater_id=?";
+        try (PreparedStatement stmt = getConnect().prepareStatement(sql)) {
+            stmt.setString(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return Optional.of(extractRoom(rs));
+            }
+        }
+        return Optional.empty();
+    }
+    public List<Room> findAll() throws SQLException, ClassNotFoundException {
+        List<Room> rooms = new ArrayList<>();
+        String sql = "SELECT * FROM theater ORDER BY theater_name";
+        try (Statement stmt = getConnect().createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                rooms.add(extractRoom(rs));
+            }
+        }
+        return rooms;
+    }    
+    private Room extractRoom(ResultSet rs) throws SQLException {
+        return new Room(
+            rs.getString("theater_id"),
+            rs.getString("theater_name"),
+            rs.getInt("row_num"),
+            rs.getInt("seat_per_row")
+        );
+    }    
 }
