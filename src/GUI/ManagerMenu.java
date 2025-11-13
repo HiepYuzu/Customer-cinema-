@@ -8,17 +8,17 @@ package GUI;
  *
  * @author Lenovo
  */
-public class MainMenu extends javax.swing.JFrame {
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MainMenu.class.getName());
+public class ManagerMenu extends javax.swing.JFrame {
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ManagerMenu.class.getName());
     /**
      * Creates new form MainMenu
      */
-    public MainMenu() {
+    public ManagerMenu() {
         setLocationRelativeTo(null);
         initComponents();
     
     }
-    public MainMenu(String name){
+    public ManagerMenu(String name){
         initComponents();
         displayName.setText("Xin chào,"+name);
     }
@@ -166,7 +166,7 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_logoutBtnActionPerformed
 
     private void serviceBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_serviceBtnActionPerformed
-        // TODO add your handling code here:
+        java.awt.EventQueue.invokeLater(() -> new ServiceGUI().setVisible(true));
     }//GEN-LAST:event_serviceBtnActionPerformed
 
     private void roomBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roomBtnActionPerformed
@@ -205,7 +205,7 @@ public class MainMenu extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-//        java.awt.EventQueue.invokeLater(() -> new MainMenu(name,role).setVisible(true));
+//        java.awt.EventQueue.invokeLater(() -> new ManagerMenu(name,role).setVisible(true));
  //   } 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

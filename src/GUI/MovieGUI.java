@@ -318,9 +318,7 @@ public class MovieGUI extends javax.swing.JFrame {
             } catch (SQLException | ClassNotFoundException ex) {
                 JOptionPane.showMessageDialog(this,ex.getMessage()+"Lỗi xóa phim");
             }
-
         }
-
     }//GEN-LAST:event_deleteBtnActionPerformed
     private void ClearForm(){
            IdField.setText("");

@@ -374,6 +374,8 @@ public class ShowtimeGUI extends javax.swing.JFrame {
            priceField.setText("");
            dateField.setText("");
            timeField.setText("");
+           MovieComboBox.setSelectedIndex(0);
+           RoomComboBox.setSelectedIndex(0);
            tableShowtime.clearSelection();
     }
                         /**

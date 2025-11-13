@@ -150,11 +150,17 @@ public class LoginGUI extends javax.swing.JFrame {
             if(rs.next()){
                String name=rs.getString("emp_name");
                String role=rs.getString("emp_role");
-               java.awt.EventQueue.invokeLater(() -> {
-                   new MainMenu(name).setVisible(true);
+               if("quan ly".equals(role)){
+                 java.awt.EventQueue.invokeLater(() -> {
+                   new ManagerMenu(name).setVisible(true);
                    setVisible(false);
-               });
-               JOptionPane.showMessageDialog(this,name);
+                 });
+               }
+               else{
+                  java.awt.EventQueue.invokeLater(() -> new EmployeeMenu(name).setVisible(true));
+                  setVisible(false);
+               }
+               //JOptionPane.showMessageDialog(this,name);
             }
             else{
                JOptionPane.showMessageDialog(this,"Tên đăng nhập hoặc mật khẩu không đúng");
