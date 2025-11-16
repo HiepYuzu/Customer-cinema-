@@ -70,7 +70,18 @@ public class ShowtimeDAO {
         }
         return showtimes;
     }
-
+    public List<Showtime> getShowtimesByMovieId(String movieId) throws SQLException, ClassNotFoundException {
+        List<Showtime> showtimes = new ArrayList<>();
+        String sql = "select show_id,s.mov_id,theater_id,show_date,start_time,show_price from showtime s join movie m on s.Mov_ID=m.mov_id where s.Mov_ID=?";
+        try (PreparedStatement pst = getConnect().prepareStatement(sql)) {
+            pst.setString(1,movieId);   
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+               showtimes.add(extractShowTime(rs));
+            }
+        }
+        return showtimes;
+    }
     // Tìm suất chiếu theo ID
     public Optional<Showtime> getShowtimeById(String showId) throws SQLException, ClassNotFoundException {
         String sql = "SELECT * FROM showtime WHERE Show_ID=?";
@@ -83,6 +94,17 @@ public class ShowtimeDAO {
         }
         return null;
     }
+    public Optional<Showtime> getShowtimeByDate(String showDate) throws SQLException, ClassNotFoundException {
+        String sql = "select * from showtime s join theater t on s.Theater_ID=t.Theater_ID where start_time=?";
+        try (PreparedStatement pst = getConnect().prepareStatement(sql)) {
+            pst.setString(1, showDate);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                return Optional.of(extractShowTime(rs));
+            }
+        }
+        return null;
+    }    
     private Showtime extractShowTime(ResultSet rs) throws SQLException, ClassNotFoundException {
         String movieId = rs.getString("mov_id");
         String roomId = rs.getString("theater_id");

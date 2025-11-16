@@ -1,5 +1,7 @@
 package entity;
 import java.time.*;
+import java.util.HashSet;
+import java.util.Set;
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -18,6 +20,7 @@ public class Showtime {
     private LocalTime start_time;
     private LocalTime end_time;
     private Double price;
+    private Set<String> bookedSeats;
         public Showtime(){}
         public Showtime (String id, Movie movie, Room room, LocalDate date, LocalTime start_time, Double show_price ){
             this.id = id;
@@ -26,8 +29,21 @@ public class Showtime {
             this.date= date;
             this.start_time = start_time;           
             this.price = show_price;
-            this.end_time = start_time.plusMinutes(movie.getDuration());
+            this.bookedSeats=new HashSet<>();
+            this.end_time = start_time.plusMinutes(movie.getDuration());           
         }
+    public void bookSeat(String seatNum){
+       if(bookedSeats.contains(seatNum)){
+            return;
+       }
+       bookedSeats.add(seatNum);
+    }
+    public boolean seatAvailable(String seatNum){
+       return !bookedSeats.contains(seatNum);
+    }
+    public int getAvailableSeat(){
+       return room.getSeatCount()-bookedSeats.size();
+    }    
     public String getId() {
         return id;
     }
@@ -80,4 +96,7 @@ public class Showtime {
     public void setShow_price(Double Show_price) {
         this.price = Show_price;
     }
+    public Set<String> getBookedSeats() {
+        return bookedSeats;
+    }    
 }

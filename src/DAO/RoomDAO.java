@@ -58,6 +58,7 @@ public class RoomDAO {
         }
         return Optional.empty();
     }
+
     public List<Room> findAll() throws SQLException, ClassNotFoundException {
         List<Room> rooms = new ArrayList<>();
         String sql = "SELECT * FROM theater ORDER BY theater_name";

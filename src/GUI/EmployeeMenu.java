@@ -60,6 +60,11 @@ public class EmployeeMenu extends javax.swing.JFrame {
         reportBtn.setText("Thống kê hóa đơn");
 
         ticketBtn.setText("Bán vé");
+        ticketBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ticketBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -124,6 +129,10 @@ public class EmployeeMenu extends javax.swing.JFrame {
     private void customerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customerBtnActionPerformed
         java.awt.EventQueue.invokeLater(() -> new CustomerGUI().setVisible(true));
     }//GEN-LAST:event_customerBtnActionPerformed
+
+    private void ticketBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ticketBtnActionPerformed
+        java.awt.EventQueue.invokeLater(() -> new TicketSale().setVisible(true));
+    }//GEN-LAST:event_ticketBtnActionPerformed
 
     /**
      * @param args the command line arguments
