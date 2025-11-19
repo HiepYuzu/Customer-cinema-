@@ -3,6 +3,10 @@ package cinema;
 
 import java.sql.*;
 public class Database {
+
+    public static Connection getConnection() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
        private Connection con;
        private static Database db;
        private String url;
@@ -18,9 +22,9 @@ public class Database {
            return db;
        }
        public Connection connect() throws SQLException{
-           url="jdbc:mysql://localhost:3306/cinema";
+         url="jdbc:mysql://localhost:3306/sys";
            user="root";
-           pass="12345678";
+           pass="123456";
            con=DriverManager.getConnection(url,user,pass);
            return con;
        } 

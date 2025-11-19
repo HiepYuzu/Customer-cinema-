@@ -22,6 +22,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.sql.Connection;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableCellEditor;
+
+import javax.swing.DefaultCellEditor;
+import javax.swing.JTable;
+import javax.swing.table.TableColumn;
 public class TicketSale extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TicketSale.class.getName());
@@ -40,7 +53,23 @@ public class TicketSale extends javax.swing.JFrame {
         showtimeDAO=new ShowtimeDAO();
         roomDAO=new RoomDAO();
         initComponents();
+        
         loadMovie();
+        
+        jButton1.setText("Quay lại");
+jButton1.addActionListener(evt -> {
+    SalePane.setSelectedIndex(0);  // Quay về tab 1 (chọn ghế)
+});
+
+jButton2.setText("Tiếp");
+jButton2.addActionListener(evt -> {
+    SalePane.setSelectedIndex(2);  // Sang tab 3 (hóa đơn)
+});
+        SalePane.addChangeListener(e -> {
+            if (SalePane.getSelectedIndex() == 1) {
+                loadServiceToTable();
+            }
+        });
     }
 
     /**
@@ -70,7 +99,18 @@ public class TicketSale extends javax.swing.JFrame {
         serviceBtn = new javax.swing.JButton();
         cancelBtn = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblProduct = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
 
@@ -147,7 +187,7 @@ public class TicketSale extends javax.swing.JFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(ShowtimeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel2))))
-                        .addContainerGap(497, Short.MAX_VALUE))
+                        .addContainerGap(1103, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(seatPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(47, 47, 47)
@@ -189,7 +229,7 @@ public class TicketSale extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(seatPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(699, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -212,23 +252,110 @@ public class TicketSale extends javax.swing.JFrame {
 
         SalePane.addTab("tab1", jPanel1);
 
-        jLabel5.setText("Service");
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 717, Short.MAX_VALUE)
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 640, Short.MAX_VALUE)
+        );
+
+        tblProduct.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Mã", "Tên", "Giá", "Số lượng"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tblProduct);
+
+        jLabel5.setText("Dịch vụ :");
+
+        jLabel10.setText("Giá vé: ");
+
+        jLabel11.setText("Tổng:");
+
+        jButton1.setText("Quay lại");
+
+        jButton2.setText("Tiếp");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(248, 248, 248)
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(441, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(633, 633, 633)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(44, 44, 44)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton1)
+                                .addGap(75, 75, 75)
+                                .addComponent(jButton2))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(40, 40, 40)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(121, 121, 121)
-                .addComponent(jLabel5)
-                .addContainerGap(268, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(63, 63, 63)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel9)
+                            .addComponent(jLabel12))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel10)
+                            .addComponent(jLabel13))
+                        .addGap(12, 12, 12)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel11)
+                            .addComponent(jLabel14))
+                        .addGap(125, 125, 125)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton1)
+                            .addComponent(jButton2))))
+                .addGap(132, 132, 132)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         SalePane.addTab("tab2", jPanel2);
@@ -240,16 +367,16 @@ public class TicketSale extends javax.swing.JFrame {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(261, 261, 261)
+                .addGap(338, 338, 338)
                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(441, Short.MAX_VALUE))
+                .addContainerGap(970, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(116, 116, 116)
                 .addComponent(jLabel7)
-                .addContainerGap(273, Short.MAX_VALUE))
+                .addContainerGap(953, Short.MAX_VALUE))
         );
 
         SalePane.addTab("tab3", jPanel3);
@@ -394,6 +521,101 @@ public class TicketSale extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this,"Lỗi"+ex.getMessage());
         }
     }
+    private void loadServiceToTable() {
+    try {
+        Connection con = Database.getDB().connect();   // đúng cách của bạn
+        String sql = "SELECT Service_ID, Service_name, Service_price FROM Service";
+        PreparedStatement pst = con.prepareStatement(sql);
+        ResultSet rs = pst.executeQuery();
+
+        DefaultTableModel model = (DefaultTableModel) tblProduct.getModel();
+        model.setRowCount(0);
+
+        while (rs.next()) {
+            String ma   = rs.getString("Service_ID");
+            String ten  = rs.getString("Service_name");
+            double gia  = rs.getDouble("Service_price");
+
+            // Tạo JSpinner (0 → 50, mặc định = 0)
+            JSpinner spinner = new JSpinner(new SpinnerNumberModel(0, 0, 50, 1));
+            
+            model.addRow(new Object[]{ma, ten, gia, spinner});
+        }
+
+        // QUAN TRỌNG: Hiển thị JSpinner thay vì toString()
+        TableColumn col = tblProduct.getColumnModel().getColumn(3);
+        col.setCellRenderer(new SpinnerRenderer());
+        col.setCellEditor(new SpinnerEditor());
+
+        tblProduct.setRowHeight(35);                    
+        tblProduct.getColumnModel().getColumn(3).setPreferredWidth(100); 
+        
+        rs.close();
+        pst.close();
+        con.close();
+
+    } catch (Exception ex) {
+        JOptionPane.showMessageDialog(this, "Lỗi tải dịch vụ: " + ex.getMessage());
+        ex.printStackTrace();
+    }
+}
+    // Renderer – để hiển thị JSpinner
+class SpinnerRenderer implements TableCellRenderer {
+    @Override
+    public Component getTableCellRendererComponent(JTable table, Object value,
+            boolean isSelected, boolean hasFocus, int row, int column) {
+        JSpinner spinner = (JSpinner) value;
+        if (spinner == null) {
+            spinner = new JSpinner(new SpinnerNumberModel(0, 0, 50, 1));
+        }
+        return spinner;
+    }
+}
+
+// Editor – để cho phép bấm tăng/giảm
+// Cho phép bấm tăng/giảm và lưu giá trị đúng
+class SpinnerEditor extends DefaultCellEditor {
+    private JSpinner spinner;
+    private boolean isEditing = false;
+
+    public SpinnerEditor() {
+        super(new JCheckBox());
+        spinner = new JSpinner(new SpinnerNumberModel(0, 0, 50, 1));
+        spinner.setBorder(BorderFactory.createEmptyBorder());
+        
+        // Bắt sự kiện khi người dùng bấm nút mũi tên hoặc click vào spinner
+        spinner.addChangeListener(e -> {
+            if (isEditing) {
+                fireEditingStopped();
+            }
+        });
+    }
+
+    @Override
+    public Component getTableCellEditorComponent(JTable table, Object value,
+            boolean isSelected, int row, int column) {
+        isEditing = true;
+        spinner.setValue(value instanceof Integer ? (Integer) value : 0);
+        return spinner;
+    }
+
+    @Override
+    public Object getCellEditorValue() {
+        return spinner.getValue();
+    }
+
+    @Override
+    public boolean stopCellEditing() {
+        isEditing = false;
+        return super.stopCellEditing();
+    }
+
+    @Override
+    protected void fireEditingStopped() {
+        super.fireEditingStopped();
+    }
+}
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -421,7 +643,14 @@ public class TicketSale extends javax.swing.JFrame {
     private javax.swing.JTabbedPane SalePane;
     private javax.swing.JComboBox<String> ShowtimeComboBox;
     private javax.swing.JButton cancelBtn;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -429,13 +658,17 @@ public class TicketSale extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel roomLabel;
     private javax.swing.JPanel seatPanel;
     private javax.swing.JButton serviceBtn;
     private javax.swing.JLabel serviceLabel;
+    private javax.swing.JTable tblProduct;
     private javax.swing.JLabel ticketLabel;
     private javax.swing.JLabel totalLabel;
     // End of variables declaration//GEN-END:variables
