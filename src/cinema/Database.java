@@ -18,9 +18,9 @@ public class Database {
            return db;
        }
        public Connection connect() throws SQLException{
-           url="jdbc:mysql://localhost:3306/cinema";
+           url="jdbc:mysql://localhost:3306/sys";
            user="root";
-           pass="12345678";
+           pass="123456";
            con=DriverManager.getConnection(url,user,pass);
            return con;
        } 
