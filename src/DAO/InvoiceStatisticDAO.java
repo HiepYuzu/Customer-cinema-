@@ -25,7 +25,7 @@ public List<InvoiceStatistic> getAllInvoices() throws ClassNotFoundException  {
                 InvoiceStatistic stat = new InvoiceStatistic(
                     rs.getString("inv_id"),
                     rs.getString("cus_id"),
-                    rs.getTimestamp("inv_date"),           // trả về java.sql.Date
+                    rs.getTimestamp("inv_date"),           
                     rs.getDouble("ticket_subtotal"),
                     rs.getDouble("service_subtotal"),
                     rs.getDouble("inv_total")
@@ -39,12 +39,7 @@ public List<InvoiceStatistic> getAllInvoices() throws ClassNotFoundException  {
         return list;
     }
 
-    /**
-     * Lấy danh sách hóa đơn theo khoảng thời gian
-     * @param from ngày bắt đầu (java.util.Date hoặc java.sql.Date đều được)
-     * @param to   ngày kết thúc
-     * @return danh sách InvoiceStatistic trong khoảng [from → to]
-     */
+   
     public List<InvoiceStatistic> getInvoicesByDate(java.util.Date from, java.util.Date to) throws ClassNotFoundException {
         List<InvoiceStatistic> list = new ArrayList<>();
         String sql = "SELECT inv_id, cus_id, inv_date, ticket_subtotal, service_subtotal, inv_total " +
@@ -55,7 +50,7 @@ public List<InvoiceStatistic> getAllInvoices() throws ClassNotFoundException  {
         try (Connection conn = Database.getDB().connect();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            // Chuyển java.util.Date → java.sql.Date an toàn
+           
             ps.setDate(1, new java.sql.Date(from.getTime()));
             ps.setDate(2, new java.sql.Date(to.getTime()));
 
